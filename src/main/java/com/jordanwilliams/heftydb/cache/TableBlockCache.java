@@ -25,6 +25,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * A cache designed for concurrent access to Offheap data blocks keyed off of a particular Table.
+ *
  * @param <T>
  */
 public class TableBlockCache<T extends Offheap> {
@@ -55,7 +56,8 @@ public class TableBlockCache<T extends Offheap> {
             Entry entry = (Entry) o;
 
             if (offset != null ? !offset.equals(entry.offset) : entry.offset != null) return false;
-            if (tableId != null ? !tableId.equals(entry.tableId) : entry.tableId != null) return false;
+            if (tableId != null ? !tableId.equals(entry.tableId) : entry.tableId != null)
+                return false;
 
             return true;
         }
@@ -83,14 +85,16 @@ public class TableBlockCache<T extends Offheap> {
     private final AtomicLong totalSize = new AtomicLong();
 
     public TableBlockCache(long maxSize, Weigher<T> weigher) {
-        cache = new ConcurrentLinkedHashMap.Builder<Entry, T>().concurrencyLevel(CONCURRENCY_LEVEL).weigher(weigher)
+        cache = new ConcurrentLinkedHashMap.Builder<Entry, T>()
+                .concurrencyLevel(CONCURRENCY_LEVEL)
+                .weigher(weigher)
                 .listener(new EvictionListener<Entry, T>() {
-            @Override
-            public void onEviction(Entry key, T value) {
-                totalSize.addAndGet(-(value.memory().size()));
-                value.memory().release();
-            }
-        }).maximumWeightedCapacity(maxSize).build();
+                    @Override
+                    public void onEviction(Entry key, T value) {
+                        totalSize.addAndGet(-(value.memory().size()));
+                        value.memory().release();
+                    }
+                }).maximumWeightedCapacity(maxSize).build();
         this.maxSize = maxSize;
     }
 
