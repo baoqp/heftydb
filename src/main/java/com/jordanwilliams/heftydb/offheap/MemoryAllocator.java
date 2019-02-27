@@ -84,6 +84,7 @@ public class MemoryAllocator {
         return pointer;
     }
 
+    // 分配和size对齐的内存
     public static MemoryPointer allocate(int size, int align) {
         return allocate(pageAlignedSize(size, align));
     }

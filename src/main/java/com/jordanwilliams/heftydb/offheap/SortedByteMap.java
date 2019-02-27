@@ -68,6 +68,8 @@ public class SortedByteMap implements Offheap, Iterable<SortedByteMap.Entry> {
 
         private final List<Entry> entries = new LinkedList<Entry>();
 
+
+        // 加入元素需要事先排好序
         public void add(Key key, Value value) {
             entries.add(new Entry(key, value));
         }
@@ -76,6 +78,8 @@ public class SortedByteMap implements Offheap, Iterable<SortedByteMap.Entry> {
             return new SortedByteMap(serializeEntries());
         }
 
+
+        // 先存放数量size，然后是各个键值对的offset，后面是各个键值对。
         private MemoryPointer serializeEntries() {
             //Allocate pointer
             int memorySize = 0;
@@ -356,6 +360,7 @@ public class SortedByteMap implements Offheap, Iterable<SortedByteMap.Entry> {
         return new Entry(new Key(keyBuffer, snapshotId), new Value(valueBuffer));
     }
 
+    // bufferKeyIndex 所指向的key < compareKey 返回 -1
     private int compareKeys(Key compareKey, int bufferKeyIndex) {
         int entryOffset = entryOffset(bufferKeyIndex);
         long startAddress = pointer.address();
