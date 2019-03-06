@@ -51,12 +51,13 @@ public class AppendChannelFile implements AppendFile {
         this.appendBuffer = MemoryAllocator.allocate(appendBufferSize);
     }
 
+
     @Override
     public synchronized long append(ByteBuffer bufferToWrite) throws IOException {
         int writeLength = bufferToWrite.limit() - bufferToWrite.position();
         long writtenPosition = appendPosition.getAndAdd(writeLength);
 
-        if (writeLength > APPEND_BUFFER_SIZE) {
+        if (writeLength > APPEND_BUFFER_SIZE) { // 清空buffer
             flushAppendBuffer();
             channel.write(bufferToWrite);
         } else {
@@ -90,6 +91,7 @@ public class AppendChannelFile implements AppendFile {
         return channel.size();
     }
 
+    // 刷盘
     @Override
     public synchronized void sync() throws IOException {
         flushAppendBuffer();

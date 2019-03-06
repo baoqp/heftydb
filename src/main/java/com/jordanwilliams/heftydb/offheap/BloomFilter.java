@@ -88,8 +88,8 @@ public class BloomFilter implements Offheap {
 
     public boolean mightContain(Key key) {
         long hash64 = MurmurHash3.MurmurHash3_x64_64(key.data().array());
-        int hash1 = (int) hash64;
-        int hash2 = (int) (hash64 >>> 32);
+        int hash1 = (int) hash64;  //  低32位
+        int hash2 = (int) (hash64 >>> 32); // 高32位
 
         for (int i = 1; i <= hashFunctionCount; i++) {
             int nextHash = hash1 + i * hash2;

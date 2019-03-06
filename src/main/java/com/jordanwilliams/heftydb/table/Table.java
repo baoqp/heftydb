@@ -25,29 +25,29 @@ import com.jordanwilliams.heftydb.util.CloseableIterator;
  */
 public interface Table extends Iterable<Tuple>, Comparable<Table> {
 
-    public long id();
+    long id();
 
-    public boolean mightContain(Key key);
+    boolean mightContain(Key key);
 
-    public Tuple get(Key key);
+    Tuple get(Key key);
 
-    public CloseableIterator<Tuple> ascendingIterator(long snapshotId);
+    CloseableIterator<Tuple> ascendingIterator(long snapshotId);
 
-    public CloseableIterator<Tuple> descendingIterator(long snapshotId);
+    CloseableIterator<Tuple> descendingIterator(long snapshotId);
 
-    public CloseableIterator<Tuple> ascendingIterator(Key key, long snapshotId);
+    CloseableIterator<Tuple> ascendingIterator(Key key, long snapshotId);
 
-    public CloseableIterator<Tuple> descendingIterator(Key key, long snapshotId);
+    CloseableIterator<Tuple> descendingIterator(Key key, long snapshotId);
 
-    public long tupleCount();
+    long tupleCount();
 
-    public long size();
+    long size();
 
-    public int level();
+    int level();
 
-    public long maxSnapshotId();
+    long maxSnapshotId();
 
-    public void close();
+    void close();
 
-    public boolean isPersistent();
+    boolean isPersistent();
 }

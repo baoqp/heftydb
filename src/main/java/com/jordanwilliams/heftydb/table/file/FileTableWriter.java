@@ -102,7 +102,7 @@ public class FileTableWriter {
         }
 
         public interface Callback {
-            public void finish();
+            void finish();
         }
 
         private static final AtomicInteger taskId = new AtomicInteger();

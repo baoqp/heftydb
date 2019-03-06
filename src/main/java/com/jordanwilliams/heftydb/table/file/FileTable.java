@@ -43,6 +43,7 @@ import java.util.NoSuchElementException;
 /**
  * Provides a read-only view on a Table file. A Table file is a doubly linked list of TupleBlocks to allow for
  * efficient iteration. These blocks make up the leaves of the B+tree provided by the Index file.
+ * B+树叶子节点那一层构成的双向链表
  */
 public class FileTable implements Table {
 

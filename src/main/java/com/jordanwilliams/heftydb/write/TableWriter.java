@@ -46,8 +46,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Handles all write operations to a database. Each write first goes into a MemoryTable,
- * which is written to disk on a background thread once it is full. Writes are serialized so that only one writer
- * thread may proceed at a time.
+ * which is written to disk on a background thread once it is full. Writes are serialized
+ * so that only one writer thread may proceed at a time.
  */
 public class TableWriter {
 
@@ -75,7 +75,7 @@ public class TableWriter {
         this.writeThrottle = new Throttle(config.maxWriteRate());
 
         this.tableExecutor = new ThreadPoolExecutor(config.tableWriterThreads(), config.tableWriterThreads(),
-                Long.MAX_VALUE, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>(config.tableWriterThreads()),
+                Long.MAX_VALUE, TimeUnit.DAYS, new LinkedBlockingQueue<>(config.tableWriterThreads()),
                 new ThreadFactoryBuilder().setNameFormat("Table writer thread %d").build(),
                 new ThreadPoolExecutor.CallerRunsPolicy());
     }
@@ -128,21 +128,20 @@ public class TableWriter {
     private void writeMemoryTable(final Table tableToWrite) {
         final FileTableWriter.Task task = new FileTableWriter.Task.Builder().tableId(tableToWrite.id()).level(1)
                 .paths(paths).config(config).source(tableToWrite.ascendingIterator(snapshots.minimumRetainedId())).tupleCount
-                        (tableToWrite.tupleCount()).throttle(Throttle.MAX).callback(new FileTableWriter.Task.Callback
-                        () {
-            @Override
-            public void finish() {
-                try {
-                    tables.swap(FileTable.open(tableToWrite.id(), paths, caches.recordBlockCache(),
-                            caches.indexBlockCache(), metrics), tableToWrite);
-                    Files.deleteIfExists(paths.logPath(tableToWrite.id()));
-                } catch (ClosedChannelException e) {
-                    logger.debug("File table was only partially written " + tableToWrite.id());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }).build();
+                        (tableToWrite.tupleCount()).throttle(Throttle.MAX).callback(new FileTableWriter.Task.Callback() {
+                    @Override
+                    public void finish() {
+                        try {
+                            tables.swap(FileTable.open(tableToWrite.id(), paths, caches.recordBlockCache(),
+                                    caches.indexBlockCache(), metrics), tableToWrite);
+                            Files.deleteIfExists(paths.logPath(tableToWrite.id()));
+                        } catch (ClosedChannelException e) {
+                            logger.debug("File table was only partially written " + tableToWrite.id());
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }).build();
 
         tableExecutor.execute(new Runnable() {
             @Override

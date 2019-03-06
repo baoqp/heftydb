@@ -22,6 +22,7 @@ import java.nio.ByteBuffer;
 
 /**
  * An immutable bit set that is backed by off-heap memory.
+ * 参考 https://blog.csdn.net/kongmin_123/article/details/82225172
  */
 public class BitSet implements Offheap {
 
@@ -96,4 +97,6 @@ public class BitSet implements Offheap {
     private static int memoryOffset(long bitIndex) {
         return (int) (bitIndex >> ADDRESS_BITS_PER_WORD) * Sizes.LONG_SIZE;
     }
+
+
 }

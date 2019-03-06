@@ -23,11 +23,12 @@ import java.util.Iterator;
 /**
  * An iterator that needs to be closed when it is no longer used so that off-heap memory or file handles can be
  * properly cleaned up.
+ *
  * @param <T>
  */
 public interface CloseableIterator<T> extends Iterator<T>, Closeable {
 
-    public static class Wrapper<T> implements CloseableIterator<T> {
+    class Wrapper<T> implements CloseableIterator<T> {
 
         private final Iterator<T> delegate;
 

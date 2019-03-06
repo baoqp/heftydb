@@ -35,13 +35,15 @@ import java.util.Queue;
  * Provides a read-only view on a CommitLog file. Commit logs are written with a predictable stream of pseudo random
  * numbers with each record to ensure consistency. A commit log file that contains corrupted records is truncated at
  * the first record that fails this consistency check.
+ * 一个Table对应一个CommitLog
+ *
  */
 public class CommitLog implements Iterable<Tuple>, Closeable {
 
     private class LogIterator implements Iterator<Tuple> {
 
         private final XORShiftRandom pseudoRandom;
-        private final Queue<Tuple> nextTuple = new LinkedList<Tuple>();
+        private final Queue<Tuple> nextTuple = new LinkedList<>();
         private long fileOffset = Sizes.LONG_SIZE;
 
         public LogIterator() {
@@ -96,7 +98,7 @@ public class CommitLog implements Iterable<Tuple>, Closeable {
                 int nextInt = logFile.readInt(fileOffset);
                 fileOffset += Sizes.INT_SIZE;
 
-                if (nextInt != pseudoRandom.nextInt()) {
+                if (nextInt != pseudoRandom.nextInt()) { // 随机数是用来校验数据是否损坏
                     return null;
                 }
 

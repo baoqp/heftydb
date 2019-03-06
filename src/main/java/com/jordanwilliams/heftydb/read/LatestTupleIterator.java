@@ -76,6 +76,7 @@ public class LatestTupleIterator implements CloseableIterator<Tuple> {
         while (tupleIterator.hasNext()) {
             Tuple next = tupleIterator.next();
 
+            // 过滤掉大于maxSnapshotId的记录
             if (next.key().snapshotId() > maxSnapshotId) {
                 continue;
             }

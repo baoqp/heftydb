@@ -34,7 +34,7 @@ public class IndexWriter {
 
     private final AppendFile indexFile;
     private final int maxIndexBlockSize;
-    private final List<IndexBlock.Builder> indexBlockBuilders = new ArrayList<IndexBlock.Builder>();
+    private final List<IndexBlock.Builder> indexBlockBuilders = new ArrayList<>();
 
     private IndexWriter(AppendFile indexFile, int maxIndexBlockSize) {
         this.indexFile = indexFile;
@@ -42,8 +42,10 @@ public class IndexWriter {
         indexBlockBuilders.add(new IndexBlock.Builder());
     }
 
+
     public void write(IndexRecord indexRecord) throws IOException {
-        Queue<IndexRecord> pendingIndexRecord = new LinkedList<IndexRecord>();
+
+        Queue<IndexRecord> pendingIndexRecord = new LinkedList<>(); // 保存待写入的IndexRecord
         pendingIndexRecord.add(indexRecord);
 
         for (int i = 0; i < indexBlockBuilders.size(); i++) {
@@ -53,6 +55,10 @@ public class IndexWriter {
 
             IndexBlock.Builder levelBuilder = indexBlockBuilders.get(i);
 
+            // 先判断当前Level的BlockBuilder是否已满，如果是则先把当前block写入磁盘，并创建一个新的
+            // BlockBuilder来保存要加入的IndexRecord.如果发生了Block写入，那么需要在其父Block
+            // 中插入一个表示刚刚写入的Block的IndexRecord，该IndexRecord存入pendingIndexRecord队列。
+            // 如果当前Level的BlockBuilder未满，则直接保存到BlockBuilder即可
             if (levelBuilder.size() >= maxIndexBlockSize) {
                 IndexRecord metaRecord = writeIndexBlock(levelBuilder.build());
 

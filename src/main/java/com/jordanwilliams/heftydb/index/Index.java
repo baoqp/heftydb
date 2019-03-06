@@ -95,7 +95,7 @@ public class Index {
         return indexBlock;
     }
 
-    private IndexBlock readIndexBlock(long blockOffset, int blockSize) throws IOException {
+    private IndexBlock  readIndexBlock(long blockOffset, int blockSize) throws IOException {
         MemoryPointer indexPointer = MemoryAllocator.allocate(blockSize);
 
         try {

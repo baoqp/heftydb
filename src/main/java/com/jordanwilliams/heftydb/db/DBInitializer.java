@@ -62,7 +62,7 @@ public class DBInitializer {
     }
 
     private List<Table> loadTables() throws IOException {
-        List<Table> tables = new ArrayList<Table>();
+        List<Table> tables = new ArrayList<>();
         Set<Long> tableIds = paths.tableFileIds();
 
         for (Long id : tableIds) {

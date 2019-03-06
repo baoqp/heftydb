@@ -32,6 +32,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
  */
 public class SkipListTupleMap implements SortedTupleMap {
 
+    // 可排序的并发Map来保存内存中的记录 TODO Key = Tuple.Key ??
     private final ConcurrentNavigableMap<Key, Tuple> tuples = new ConcurrentSkipListMap<Key, Tuple>();
 
     @Override
@@ -41,6 +42,7 @@ public class SkipListTupleMap implements SortedTupleMap {
 
     @Override
     public Tuple get(Key key) {
+        // 小于等于且最接近于给定key的Entry
         Map.Entry<Key, Tuple> closestEntry = tuples.floorEntry(key);
 
         if (closestEntry == null) {

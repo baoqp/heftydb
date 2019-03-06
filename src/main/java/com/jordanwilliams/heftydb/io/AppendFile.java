@@ -25,13 +25,13 @@ import java.nio.ByteBuffer;
  */
 public interface AppendFile extends Closeable {
 
-    public long append(ByteBuffer buffer) throws IOException;
+    long append(ByteBuffer buffer) throws IOException;
 
-    public long appendLong(long value) throws IOException;
+    long appendLong(long value) throws IOException;
 
-    public long appendInt(int value) throws IOException;
+    long appendInt(int value) throws IOException;
 
-    public long size() throws IOException;
+    long size() throws IOException;
 
-    public void sync() throws IOException;
+    void sync() throws IOException;
 }
