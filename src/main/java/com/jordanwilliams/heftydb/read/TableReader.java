@@ -48,7 +48,7 @@ public class TableReader implements Iterable<Tuple> {
                             snapshotId));
                 }
 
-                return new LatestTupleIterator(snapshotId, new MergingIterator<Tuple>(tableIterators));
+                return new LatestTupleIterator(snapshotId, new MergingIterator<>(tableIterators));
             } finally {
                 tables.readUnlock();
             }
@@ -68,7 +68,7 @@ public class TableReader implements Iterable<Tuple> {
                             snapshotId));
                 }
 
-                return new LatestTupleIterator(snapshotId, new MergingIterator<Tuple>(true, tableIterators));
+                return new LatestTupleIterator(snapshotId, new MergingIterator<>(true, tableIterators));
             } finally {
                 tables.readUnlock();
             }
@@ -107,6 +107,7 @@ public class TableReader implements Iterable<Tuple> {
                     bloomFilterFalsePositiveRate.sample(tableTuple == null);
 
                     if (tableTuple != null) {
+                        // 取snapshotId最大的，也就是最新的记录
                         if (closestTuple == null || tableTuple.key().snapshotId() > closestTuple.key().snapshotId()) {
                             closestTuple = tableTuple;
                         }
@@ -133,8 +134,8 @@ public class TableReader implements Iterable<Tuple> {
                 tableIterators.add(table.ascendingIterator(snapshotId));
             }
 
-            TableAggregationIterator tableAggregationIterator = new TableAggregationIterator(new MergingIterator<Tuple>
-                    (tableIterators), snapshotId, tables, ascendingIteratorSource);
+            TableAggregationIterator tableAggregationIterator = new TableAggregationIterator(
+                    new MergingIterator<>(tableIterators), snapshotId, tables, ascendingIteratorSource);
 
             return new LatestTupleIterator(snapshotId, tableAggregationIterator);
         } finally {

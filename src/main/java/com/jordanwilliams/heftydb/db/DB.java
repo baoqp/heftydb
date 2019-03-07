@@ -23,35 +23,35 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.Future;
 
 /**
- * The public API for a database implementation.
+ * The  API for a database implementation.
  */
 public interface DB {
 
-    public Snapshot put(ByteBuffer key, ByteBuffer value) throws IOException;
+    Snapshot put(ByteBuffer key, ByteBuffer value) throws IOException;
 
-    public Snapshot put(ByteBuffer key, ByteBuffer value, boolean fsync) throws IOException;
+    Snapshot put(ByteBuffer key, ByteBuffer value, boolean fsync) throws IOException;
 
-    public Record get(ByteBuffer key) throws IOException;
+    Record get(ByteBuffer key) throws IOException;
 
-    public Record get(ByteBuffer key, Snapshot snapshot) throws IOException;
+    Record get(ByteBuffer key, Snapshot snapshot) throws IOException;
 
-    public Snapshot delete(ByteBuffer key) throws IOException;
+    Snapshot delete(ByteBuffer key) throws IOException;
 
-    public CloseableIterator<Record> ascendingIterator(Snapshot snapshot) throws IOException;
+    CloseableIterator<Record> ascendingIterator(Snapshot snapshot) throws IOException;
 
-    public CloseableIterator<Record> ascendingIterator(ByteBuffer key, Snapshot snapshot) throws IOException;
+    CloseableIterator<Record> ascendingIterator(ByteBuffer key, Snapshot snapshot) throws IOException;
 
-    public CloseableIterator<Record> descendingIterator(Snapshot snapshot) throws IOException;
+    CloseableIterator<Record> descendingIterator(Snapshot snapshot) throws IOException;
 
-    public CloseableIterator<Record> descendingIterator(ByteBuffer key, Snapshot snapshot) throws IOException;
+    CloseableIterator<Record> descendingIterator(ByteBuffer key, Snapshot snapshot) throws IOException;
 
-    public void retainSnapshot(Snapshot snapshot);
+    void retainSnapshot(Snapshot snapshot);
 
-    public void releaseSnapshot(Snapshot snapshot);
+    void releaseSnapshot(Snapshot snapshot);
 
-    public void close() throws IOException;
+    void close() throws IOException;
 
-    public void logMetrics();
+    void logMetrics();
 
-    public Future<?> compact() throws IOException;
+    Future<?> compact() throws IOException;
 }

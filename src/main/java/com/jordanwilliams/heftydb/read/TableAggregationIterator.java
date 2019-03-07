@@ -32,7 +32,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class TableAggregationIterator implements CloseableIterator<Tuple> {
 
     public interface Source {
-        public CloseableIterator<Tuple> refresh(Key key, long snapshotId);
+        CloseableIterator<Tuple> refresh(Key key, long snapshotId);
     }
 
     private final AtomicBoolean dirtySource = new AtomicBoolean();
@@ -63,7 +63,6 @@ public class TableAggregationIterator implements CloseableIterator<Tuple> {
     @Override
     public boolean hasNext() {
         tables.readLock();
-
         try {
             refreshSource();
 

@@ -18,12 +18,12 @@ package com.jordanwilliams.heftydb.util;
 
 /**
  * An iterator that allows peeking at the current value.
+ *
  * @param <T>
  */
 public interface PeekableIterator<T> {
 
-    public T current();
+    T current();
 
-    public boolean advance();
-
+    boolean advance();
 }

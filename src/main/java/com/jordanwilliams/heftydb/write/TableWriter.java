@@ -113,6 +113,7 @@ public class TableWriter {
         tableExecutor.shutdownNow();
     }
 
+    // 把已满的memoryTable写入磁盘，并新建一个memoryTable和对应的log文件
     private void rotateMemoryTable() throws IOException {
         if (memoryTable != null) {
             commitLogWriter.close();
@@ -134,7 +135,7 @@ public class TableWriter {
                         try {
                             tables.swap(FileTable.open(tableToWrite.id(), paths, caches.recordBlockCache(),
                                     caches.indexBlockCache(), metrics), tableToWrite);
-                            Files.deleteIfExists(paths.logPath(tableToWrite.id()));
+                            Files.deleteIfExists(paths.logPath(tableToWrite.id())); // 删除log文件
                         } catch (ClosedChannelException e) {
                             logger.debug("File table was only partially written " + tableToWrite.id());
                         } catch (IOException e) {

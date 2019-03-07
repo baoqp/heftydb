@@ -30,6 +30,7 @@ import java.util.Queue;
 
 /**
  * A a generic Iterator that merges multiple sorted Iterators into a single sorted Iterator.
+ *
  * @param <T>
  */
 public class MergingIterator<T extends Comparable> implements CloseableIterator<T> {
@@ -73,11 +74,11 @@ public class MergingIterator<T extends Comparable> implements CloseableIterator<
         }
     }
 
-    private final Queue<T> next = new LinkedList<T>();
+    private final Queue<T> next = new LinkedList<>();
     private final PriorityQueue<ComparableIterator<T>> iteratorHeap;
 
     public MergingIterator(List<CloseableIterator<T>> iterators) {
-        this.iteratorHeap = new PriorityQueue<ComparableIterator<T>>();
+        this.iteratorHeap = new PriorityQueue<>();
         buildIteratorHeap(iterators);
     }
 
@@ -105,6 +106,7 @@ public class MergingIterator<T extends Comparable> implements CloseableIterator<
             return false;
         }
 
+        // 每取一个元素，要把Iterator也取出，之后再放回，因为多个iterator的范围可能会有重合
         ComparableIterator<T> nextIterator = iteratorHeap.poll();
         T nextCandidate = nextIterator.current();
 
@@ -139,10 +141,11 @@ public class MergingIterator<T extends Comparable> implements CloseableIterator<
         throw new UnsupportedOperationException();
     }
 
+
     private void buildIteratorHeap(List<CloseableIterator<T>> iteratorList) {
         for (CloseableIterator<T> iterator : iteratorList) {
             if (iterator.hasNext()) {
-                iteratorHeap.add(new ComparableIterator<T>(iterator));
+                iteratorHeap.add(new ComparableIterator<>(iterator));
             }
         }
     }

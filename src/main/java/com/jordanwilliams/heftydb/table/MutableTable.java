@@ -22,6 +22,5 @@ import com.jordanwilliams.heftydb.data.Tuple;
  * Represents a mutable Table.
  */
 public interface MutableTable extends Table {
-
-    public void put(Tuple tuple);
+    void put(Tuple tuple);
 }

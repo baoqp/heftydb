@@ -32,9 +32,9 @@ import java.util.TreeSet;
 public class LatestTupleIterator implements CloseableIterator<Tuple> {
 
     private final CloseableIterator<Tuple> tupleIterator;
-    private final Queue<Tuple> nextTuple = new LinkedList<Tuple>();
+    private final Queue<Tuple> nextTuple = new LinkedList<>();
     private final long maxSnapshotId;
-    private final SortedSet<Tuple> currentKeyTuples = new TreeSet<Tuple>();
+    private final SortedSet<Tuple> currentKeyTuples = new TreeSet<>();
 
     public LatestTupleIterator(long maxSnapshotId, CloseableIterator<Tuple> tupleIterator) {
         this.maxSnapshotId = maxSnapshotId;
