@@ -43,7 +43,7 @@ public class SizeTieredCompactionPlanner implements CompactionPlanner {
     @Override
     public CompactionPlan planCompaction() {
         SortedMap<Integer, List<Table>> leveledTables = leveledTables();
-        List<CompactionTask> compactionTasks = new ArrayList<CompactionTask>();
+        List<CompactionTask> compactionTasks = new ArrayList<>();
 
         for (Map.Entry<Integer, List<Table>> entry : leveledTables.entrySet()) {
             if (entry.getValue().size() >= MAX_LEVEL_TABLES) {
@@ -70,21 +70,17 @@ public class SizeTieredCompactionPlanner implements CompactionPlanner {
     }
 
     private SortedMap<Integer, List<Table>> leveledTables() {
-        SortedMap<Integer, List<Table>> tableMap = new TreeMap<Integer, List<Table>>();
-
+        SortedMap<Integer, List<Table>> tableMap = new TreeMap<>();
         List<Table> eligibleTables = tables.eligibleTables();
-
         for (Table table : eligibleTables) {
             List<Table> levelTables = tableMap.get(table.level());
-
             if (levelTables == null) {
-                levelTables = new ArrayList<Table>();
+                levelTables = new ArrayList<>();
                 tableMap.put(table.level(), levelTables);
             }
 
             levelTables.add(table);
         }
-
         return tableMap;
     }
 }

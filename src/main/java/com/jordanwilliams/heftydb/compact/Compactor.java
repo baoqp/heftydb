@@ -70,7 +70,7 @@ public class Compactor {
         public void run() {
             try {
                 Timer.Context watch = metrics.timer("compactor.taskExecution").time();
-                List<CloseableIterator<Tuple>> tableIterators = new ArrayList<CloseableIterator<Tuple>>();
+                List<CloseableIterator<Tuple>> tableIterators = new ArrayList<>();
                 long tupleCount = 0;
                 long nextTableId = tables.nextId();
 
@@ -140,18 +140,18 @@ public class Compactor {
         this.snapshots = snapshots;
 
         this.compactionExecutor = new ThreadPoolExecutor(config.tableCompactionThreads(), config.tableCompactionThreads(),
-                Long.MAX_VALUE, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>(config.tableCompactionThreads()),
+                Long.MAX_VALUE, TimeUnit.DAYS, new LinkedBlockingQueue<>(config.tableCompactionThreads()),
                 new ThreadFactoryBuilder().setNameFormat("Compaction thread %d").build(), new ThreadPoolExecutor.CallerRunsPolicy());
 
         int compactionTaskThreads = Math.max(config.tableCompactionThreads() / 2, 1);
 
         this.compactionTaskExecutor = new ThreadPoolExecutor(compactionTaskThreads, compactionTaskThreads, Long.MAX_VALUE,
-                TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>(config.tableCompactionThreads()),
+                TimeUnit.DAYS, new LinkedBlockingQueue<>(config.tableCompactionThreads()),
                 new ThreadFactoryBuilder().setNameFormat("Compaction task thread %d").build(),
                 new ThreadPoolExecutor.CallerRunsPolicy());
 
         this.highPriorityCompactionTaskExecutor = new ThreadPoolExecutor(compactionTaskThreads, compactionTaskThreads,
-                Long.MAX_VALUE, TimeUnit.DAYS, new LinkedBlockingQueue<Runnable>(config.tableCompactionThreads()),
+                Long.MAX_VALUE, TimeUnit.DAYS, new LinkedBlockingQueue<>(config.tableCompactionThreads()),
                 new ThreadFactoryBuilder().setNameFormat("High priority " +
                 "compaction task thread %d").build(), new ThreadPoolExecutor.CallerRunsPolicy());
 

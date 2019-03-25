@@ -20,7 +20,7 @@ import com.jordanwilliams.heftydb.compact.CompactionPlan;
 
 public interface CompactionPlanner {
 
-    public CompactionPlan planCompaction();
+    CompactionPlan planCompaction();
 
-    public boolean needsCompaction();
+    boolean needsCompaction();
 }

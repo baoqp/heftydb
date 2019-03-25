@@ -20,6 +20,7 @@ import com.jordanwilliams.heftydb.table.Table;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents a single CompactionTask.
@@ -81,9 +82,7 @@ public class CompactionTask {
 
         if (level != that.level) return false;
         if (priority != that.priority) return false;
-        if (tables != null ? !tables.equals(that.tables) : that.tables != null) return false;
-
-        return true;
+        return Objects.equals(tables, that.tables);
     }
 
     @Override

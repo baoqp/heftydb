@@ -29,7 +29,7 @@ import java.util.Set;
  */
 public class CompactionTables {
 
-    private final Set<Long> alreadyCompactedTables = new HashSet<Long>();
+    private final Set<Long> alreadyCompactedTables = new HashSet<>();
     private final Tables tables;
 
     public CompactionTables(Tables tables) {
@@ -37,17 +37,14 @@ public class CompactionTables {
     }
 
     public List<Table> eligibleTables() {
-        List<Table> eligibleTables = new ArrayList<Table>();
-
+        List<Table> eligibleTables = new ArrayList<>();
         tables.readLock();
-
         try {
             for (Table table : tables){
                 if (table.isPersistent() && !alreadyCompactedTables.contains(table.id())){
                     eligibleTables.add(table);
                 }
             }
-
         } finally {
             tables.readUnlock();
         }

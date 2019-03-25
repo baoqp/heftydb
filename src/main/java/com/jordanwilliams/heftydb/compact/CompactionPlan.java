@@ -19,6 +19,7 @@ package com.jordanwilliams.heftydb.compact;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A collection of CompactionTasks that can execute in parallel.
@@ -45,11 +46,9 @@ public class CompactionPlan implements Iterable<CompactionTask> {
         if (o == null || getClass() != o.getClass()) return false;
 
         CompactionPlan that = (CompactionPlan) o;
-
-        if (tasks != null ? !tasks.equals(that.tasks) : that.tasks != null) return false;
-
-        return true;
+        return Objects.equals(tasks, that.tasks);
     }
+
 
     @Override
     public int hashCode() {
